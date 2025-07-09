@@ -200,7 +200,7 @@ const Hero = () => {
             </button>
           ) : (
             <a
-              href="#" // Default link for "Know More"
+              href="/about/mission-statement" // Default link for "Know More"
               className="mt-8 bg-transparent border border-white/50 text-white px-5 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-white/20 hover:border-white inline-flex items-center space-x-2"
             >
               <span>{buttonText}</span>
