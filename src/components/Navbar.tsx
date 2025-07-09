@@ -196,6 +196,7 @@ const Navbar = () => {
         { href: '/about/mission-statement', label: 'Mission Statement, Values & Company Motto' },
         { href: '/about/customer-complaints', label: 'Customer Complaints' },
         { href: '/about/office-locations', label: 'Office Branch Locations' },
+        { href: '/about/komisaris-direksi', label: 'commissioners and directors' },
       ],
     },
     {

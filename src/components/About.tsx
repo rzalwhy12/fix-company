@@ -49,9 +49,6 @@ export default function About() {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{
           backgroundImage: 'url("/image/bb.webp")',
-          // Menggunakan 'isMobile' di sini:
-          // backgroundAttachment akan 'scroll' jika isMobile true (layar kecil),
-          // dan 'fixed' jika isMobile false (layar besar).
           backgroundAttachment: isMobile ? 'scroll' : 'fixed', 
         }}
       >
@@ -112,7 +109,7 @@ export default function About() {
             animate="visible"
             variants={slideInLeftVariants}
             transition={{ delay: 0.4 }}
-            href="/team"
+            href="/about/komisaris-direksi"
             className="flex items-center justify-center
                         w-full sm:w-auto
                         px-6 py-3

@@ -10,12 +10,13 @@ import DropdownMenu from '@/components/DropdownMenu';
 // import BranchLocatorLeaflet from '@/components/BranchLocator'; // <--- HAPUS ATAU KOMENTARI INI
 import CompanyProfilePage from '@/components/Company-profile';
 import CustomerComplaintForm from '@/components/CustomerComplaintForm';
-import dynamic from 'next/dynamic'; // <--- IMPORT dynamic dari next/dynamic
+import LeadershipPage from '@/app/team/page';
+import dynamic from 'next/dynamic'; 
 
-// Dynamic import for BranchLocatorLeaflet
+
 const DynamicBranchLocatorLeaflet = dynamic(() => import('@/components/BranchLocator'), {
-    ssr: false, // <-- INI KUNCI UTAMANYA! Jangan render di server
-    loading: () => <p>Loading map location...</p>, // Opsional: Tampilkan indikator loading
+    ssr: false, 
+    loading: () => <p>Loading map location...</p>, 
 });
 
 
@@ -52,8 +53,17 @@ const aboutUsContent: AboutNavItem[] = [
         title: 'Office Branch Locations',
         content: (
             <div className="w-full flex justify-center py-4">
-                {/* Gunakan komponen yang diimpor secara dinamis di sini */}
                 <DynamicBranchLocatorLeaflet />
+            </div>
+        ),
+    },
+    {
+        id: 'komisaris-direksi',
+        label: 'Commissioners and Directors',
+        title: 'Commissioners and Directors',
+        content: (
+            <div className="w-full flex justify-center py-4">
+                <LeadershipPage />
             </div>
         ),
     },
