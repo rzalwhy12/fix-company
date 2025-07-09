@@ -126,7 +126,7 @@ export default function LeadershipPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 z-[0] overflow-ellipsis pl-9 pr-9 ">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 z-[0] overflow-scroll ">
 
             {/* Hero Section */}
             <section
