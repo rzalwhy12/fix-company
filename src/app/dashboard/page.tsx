@@ -52,7 +52,7 @@ export default function Dashboard() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const [loading, setLoading] = useState(true); // This loading state is for articles
+    const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(true); // New state for initial authentication check
 
@@ -303,8 +303,10 @@ export default function Dashboard() {
                             className="pl-10 w-full"
                         />
                     </div>
+                    {/* START MODIFIED SECTION */}
                     <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                         <SelectTrigger className="w-full sm:w-48">
+                            {/* Make sure SelectValue is the ONLY direct child of SelectTrigger */}
                             <SelectValue placeholder="Filter by category" />
                         </SelectTrigger>
                         <SelectContent>
@@ -316,6 +318,7 @@ export default function Dashboard() {
                             ))}
                         </SelectContent>
                     </Select>
+                    {/* END MODIFIED SECTION */}
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
                             <Button onClick={resetForm} className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
@@ -386,12 +389,14 @@ export default function Dashboard() {
                                 </div>
                                 <div>
                                     <Label htmlFor="category">Category</Label>
+                                    {/* START MODIFIED SECTION */}
                                     <Select
                                         value={newPost.categoryy}
                                         onValueChange={(value) => setNewPost({ ...newPost, categoryy: value })}
                                         disabled={submitting}
                                     >
                                         <SelectTrigger>
+                                            {/* Ensure SelectValue is the ONLY direct child of SelectTrigger */}
                                             <SelectValue placeholder="Select category" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -402,6 +407,7 @@ export default function Dashboard() {
                                             ))}
                                         </SelectContent>
                                     </Select>
+                                    {/* END MODIFIED SECTION */}
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Switch
