@@ -315,7 +315,7 @@ const Hero = () => {
           </p>
           {isVideoSlide ? (
             <button
-              onClick={buttonAction} // Call openVideoModal
+              onClick={buttonAction} 
               className="bg-transparent border border-purple-950 text-gray-700 px-7 py-3 rounded-md text-base font-semibold transition-all duration-300 hover:bg-orange-300/30 hover:border-gray-500 inline-flex items-center space-x-2"
             >
               <PlayCircle className="h-5 w-5 mr-1" />
@@ -323,7 +323,7 @@ const Hero = () => {
             </button>
           ) : (
             <a
-              href="#"
+              href="/about/mission-statement"
               className="bg-transparent border border-purple-950 text-gray-700 px-7 py-3 rounded-md text-base font-semibold transition-all duration-300 hover:bg-orange-300/30 hover:border-gray-500 inline-flex items-center space-x-2"
             >
               <span>{buttonText}</span>
@@ -377,8 +377,6 @@ const Hero = () => {
               className="w-full h-full object-contain"
               controls
               autoPlay
-              // Hapus 'muted' di sini atau set ke false agar suara keluar di modal
-              // muted={false} // Contoh explicit unmute
               playsInline
               loop={false}
               onEnded={closeVideoModal}
