@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSignIn } from "@/lib/redux/features/userSlice";
 import BackgroundSlider from "@/components/BackgroundSlider";
 import FloatingParticles from "@/components/FloatingParticles";
+import { toast } from "react-toastify";
 
 const SignInPage: React.FunctionComponent = () => {
   const router = useRouter();
@@ -32,11 +33,11 @@ const SignInPage: React.FunctionComponent = () => {
       });
       dispatch(setSignIn(res.data[0]));
       localStorage.setItem("tkn", res.data[0].objectId);
-      alert("Welcome back!");
+      toast.success("you are logged in");
       router.replace("/dashboard");
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      toast.error("something went wrong, please check again");
     }
   };
 
@@ -47,7 +48,7 @@ const SignInPage: React.FunctionComponent = () => {
   });
 
   return (
-    <div className="min-h-screen relative overflow-hidden text-gray-800 z-[0]">
+    <div className="min-h-screen relative overflow-hidden text-gray-800 z-[]">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundSlider />
         <FloatingParticles />

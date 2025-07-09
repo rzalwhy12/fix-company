@@ -17,26 +17,25 @@ import {
   ClipboardList
 } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useAppSelector, useAppDispatch } from '@/lib//redux/hooks';
+import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { setSignIn, setSignOut } from '@/lib/redux/features/userSlice';
 import { apiCall } from '@/helper/apiCall';
 import { toast } from 'react-toastify';
 
-// Define types for your navigation links to improve type safety
 interface SubSubSubLink {
   href: string;
   label: string;
 }
 
 interface SubSubLink {
-  href?: string; // href is optional for parent items that just expand
+  href?: string;
   label: string;
   subSubSubLinks?: SubSubSubLink[];
 }
 
 interface SubLink {
   label: string;
-  href?: string; // href is optional for parent items that just expand
+  href?: string;
   subSubLinks?: SubSubLink[];
 }
 
@@ -47,7 +46,6 @@ interface NavLink {
   subLinks?: SubLink[];
 }
 
-// MobileMenuItem Component (Recursive)
 interface MobileMenuItemProps {
   item: NavLink | SubLink | SubSubLink | SubSubSubLink;
   level: number;
@@ -59,7 +57,6 @@ interface MobileMenuItemProps {
 const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ item, level, onCloseNav, router, searchParams }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Type guards to check if an item has specific sub-items
   const hasSubLinks = (item: NavLink | SubLink | SubSubLink | SubSubSubLink): item is NavLink => 'subLinks' in item && !!item.subLinks && item.subLinks.length > 0;
   const hasSubSubLinks = (item: NavLink | SubLink | SubSubLink | SubSubSubLink): item is SubLink => 'subSubLinks' in item && !!item.subSubLinks && item.subSubLinks.length > 0;
   const hasSubSubSubLinks = (item: NavLink | SubLink | SubSubLink | SubSubSubLink): item is SubSubLink => 'subSubSubLinks' in item && !!item.subSubSubLinks && item.subSubSubLinks.length > 0;
@@ -96,7 +93,7 @@ const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ item, level, onCloseNav
       } else {
         router.push(linkHref, { scroll: false });
       }
-      onCloseNav(); // Close mobile nav after clicking a link
+      onCloseNav();
     }
   };
 
@@ -117,7 +114,6 @@ const MobileMenuItem: React.FC<MobileMenuItemProps> = ({ item, level, onCloseNav
         )}
 
         {hasSubItems && (
-          // Toggle button for sub-items, always prevent default
           <button onClick={handleToggle} className="p-1 -mr-1">
             {isExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
           </button>
@@ -155,28 +151,43 @@ const Navbar = () => {
 
   const dispatch = useAppDispatch();
   const userMail = useAppSelector((state) => state.userReducer.email);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  // Check auth status on mount and when token changes
   useEffect(() => {
-    const keepLogin = async () => {
+    const checkAuthStatus = async () => {
       const tkn = localStorage.getItem("tkn");
-      if (!tkn) return;
+      if (!tkn) {
+        dispatch(setSignOut());
+        return;
+      }
 
       try {
         const res = await apiCall.get(`/accounts/${tkn}`);
         dispatch(setSignIn(res.data));
       } catch (err) {
-        console.error("Keep login failed:", err);
+        console.error("Auth check failed:", err);
         dispatch(setSignOut());
         localStorage.removeItem("tkn");
       }
     };
-    keepLogin();
-  }, [dispatch]);
 
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+    checkAuthStatus();
 
+    // Listen for storage changes (logout from other tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'tkn' && !e.newValue && userMail) {
+        dispatch(setSignOut());
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [dispatch, userMail]);
+
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -186,6 +197,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Navigation links data
   const navLinks: NavLink[] = [
     { href: '/', label: 'Home', icon: Home },
     {
@@ -196,7 +208,7 @@ const Navbar = () => {
         { href: '/about/mission-statement', label: 'Mission Statement, Values & Company Motto' },
         { href: '/about/customer-complaints', label: 'Customer Complaints' },
         { href: '/about/office-locations', label: 'Office Branch Locations' },
-        { href: '/about/komisaris-direksi', label: 'commissioners and directors' },
+        { href: '/about/komisaris-direksi', label: 'Commissioners and Directors' },
       ],
     },
     {
@@ -234,10 +246,7 @@ const Navbar = () => {
           href: '/publication?section=report',
           label: 'Report',
           subSubLinks: [
-            {
-              href: '/publication?section=financial-report',
-              label: 'Financial Report',
-            },
+            { href: '/publication?section=financial-report', label: 'Financial Report' },
             { href: '/publication?section=annual-report', label: 'Annual Report' },
           ],
         },
@@ -249,6 +258,7 @@ const Navbar = () => {
     { href: '/blog', label: 'Blog', icon: BookOpen },
   ];
 
+  // Menu hover handlers
   const handleMouseEnter = (menuLabel: string) => {
     if (menuLeaveTimeout.current) {
       clearTimeout(menuLeaveTimeout.current);
@@ -297,6 +307,7 @@ const Navbar = () => {
     }, 200);
   };
 
+  // Check if link is active
   const isActiveLink = (href: string) => {
     if (href === '/') {
       return pathname === '/' && !searchParams.get('tab');
@@ -309,6 +320,14 @@ const Navbar = () => {
     return pathname === href || pathname.startsWith(href + '/');
   };
 
+  // Handle logout
+  const handleLogout = () => {
+    dispatch(setSignOut());
+    localStorage.removeItem("tkn");
+    toast.success("You have been signed out.");
+    router.push('/');
+  };
+
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300
       ${scrolled
@@ -317,13 +336,14 @@ const Navbar = () => {
       }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link href="/">
               <div className={`relative p-1.5 rounded-lg transition-colors duration-300
                 ${scrolled ? 'bg-white' : 'lg:bg-white bg-transparent'}`}>
                 <Image
                   src="/image/Logo-HD-new-19cm.png"
-                  alt="Logo SDA"
+                  alt="Logo"
                   width={100}
                   height={20}
                   className="w-[120px] h-[30px] md:w-[150px] md:h-[40px] lg:w-[150px] lg:h-[40px]"
@@ -351,13 +371,12 @@ const Navbar = () => {
                   {link.subLinks && <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />}
                 </Link>
 
-                {/* Dropdown for subLinks (Desktop) */}
                 {link.subLinks && (
                   <div
                     className={`absolute left-0 mt-2 w-60 bg-white rounded-md shadow-lg py-2
-                                transition-all duration-300 ease-out
-                                ${activeMenu === link.label ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'}
-                                z-50`}
+                      transition-all duration-300 ease-out
+                      ${activeMenu === link.label ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'}
+                      z-50`}
                   >
                     {link.subLinks.map((subLink) => (
                       <div
@@ -369,24 +388,19 @@ const Navbar = () => {
                         <Link
                           href={subLink.href || '#'}
                           className={`flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600
-                                      ${isActiveLink(subLink.href || '') ? 'font-semibold text-blue-600 bg-gray-50' : ''}`}
-                          onClick={(e) => {
-                            if (subLink.href === '#') {
-                              e.preventDefault();
-                            }
-                          }}
+                            ${isActiveLink(subLink.href || '') ? 'font-semibold text-blue-600 bg-gray-50' : ''}`}
+                          onClick={(e) => subLink.href === '#' && e.preventDefault()}
                         >
                           {subLink.label}
                           {subLink.subSubLinks && <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />}
                         </Link>
 
-                        {/* Side Dropdown for subSubLinks (Desktop) */}
                         {subLink.subSubLinks && (
                           <div
                             className={`absolute left-full top-0 mt-0 ml-2 w-60 bg-white rounded-md shadow-lg py-2
-                                          transition-all duration-300 ease-out
-                                          ${activeSubMenu === subLink.label ? 'opacity-100 translate-x-0 visible' : 'opacity-0 translate-x-2 invisible'}
-                                          z-50`}
+                              transition-all duration-300 ease-out
+                              ${activeSubMenu === subLink.label ? 'opacity-100 translate-x-0 visible' : 'opacity-0 translate-x-2 invisible'}
+                              z-50`}
                           >
                             {subLink.subSubLinks.map((subSubLink) => (
                               <div
@@ -398,31 +412,26 @@ const Navbar = () => {
                                 <Link
                                   href={subSubLink.href || '#'}
                                   className={`flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600
-                                              ${isActiveLink(subSubLink.href || '') ? 'font-semibold text-blue-600 bg-gray-50' : ''}`}
-                                  onClick={(e) => {
-                                    if (subSubLink.href === '#') {
-                                      e.preventDefault();
-                                    }
-                                  }}
+                                    ${isActiveLink(subSubLink.href || '') ? 'font-semibold text-blue-600 bg-gray-50' : ''}`}
+                                  onClick={(e) => subSubLink.href === '#' && e.preventDefault()}
                                 >
                                   {subSubLink.label}
                                   {subSubLink.subSubSubLinks && <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />}
                                 </Link>
 
-                                {/* Third-level Side Dropdown for subSubSubLinks (Desktop) */}
                                 {subSubLink.subSubSubLinks && activeSubSubMenu === subSubLink.label && (
                                   <div
                                     className={`absolute left-full top-0 mt-0 ml-2 w-60 bg-white rounded-md shadow-lg py-2
-                                                  transition-all duration-300 ease-out
-                                                  ${activeSubSubMenu === subSubLink.label ? 'opacity-100 translate-x-0 visible' : 'opacity-0 translate-x-2 invisible'}
-                                                  z-50`}
+                                      transition-all duration-300 ease-out
+                                      ${activeSubSubMenu === subSubLink.label ? 'opacity-100 translate-x-0 visible' : 'opacity-0 translate-x-2 invisible'}
+                                      z-50`}
                                   >
                                     {subSubLink.subSubSubLinks.map((thirdLevelLink) => (
                                       <Link
                                         key={thirdLevelLink.label}
                                         href={thirdLevelLink.href}
                                         className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-600
-                                                    ${isActiveLink(thirdLevelLink.href) ? 'font-semibold text-blue-600 bg-gray-50' : ''}`}
+                                          ${isActiveLink(thirdLevelLink.href) ? 'font-semibold text-blue-600 bg-gray-50' : ''}`}
                                       >
                                         {thirdLevelLink.label}
                                       </Link>
@@ -441,18 +450,14 @@ const Navbar = () => {
             ))}
           </div>
 
+          {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center md:space-x-2 lg:space-x-3">
             {userMail ? (
               <button
                 type="button"
-                onClick={() => {
-                  dispatch(setSignOut());
-                  localStorage.removeItem("tkn");
-                  toast.success("You have been signed out."); 
-                }}
+                onClick={handleLogout}
                 className={`flex items-center space-x-1 md:px-3 md:py-1 lg:px-4 lg:py-2 rounded-lg transition-all duration-300 hover:bg-gray-100
-                  ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-700'}
-                  ${isActiveLink('/sign-in') ? 'font-bold text-blue-600' : ''}`}
+                  ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-700'}`}
               >
                 Sign Out
               </button>
@@ -460,8 +465,7 @@ const Navbar = () => {
               <Link
                 href="/sign-in"
                 className={`flex items-center space-x-1 md:px-3 md:py-1 lg:px-4 lg:py-2 rounded-lg transition-all duration-300 hover:bg-gray-100
-                  ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-700'}
-                  ${isActiveLink('/sign-in') ? 'font-bold text-blue-600' : ''}`}
+                  ${scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-blue-700'}`}
               >
                 <LogIn className="md:h-3 md:w-3 lg:h-4 lg:w-4" />
                 <span className="md:text-xs lg:text-sm font-medium">Log In</span>
@@ -469,17 +473,12 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Login / Sign Out + Hamburger */}
+          {/* Mobile Auth Buttons and Menu Toggle */}
           <div className="lg:hidden flex items-center space-x-2">
             {userMail ? (
-
               <button
                 type="button"
-                onClick={() => {
-                  dispatch(setSignOut());
-                  localStorage.removeItem("tkn");
-                  toast.success("You have been signed out."); 
-                }}
+                onClick={handleLogout}
                 className="flex items-center space-x-1 px-2 py-1 rounded-lg text-gray-800 hover:text-blue-600 hover:bg-gray-100 text-xs"
               >
                 Sign Out
@@ -502,9 +501,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
-        <div className={`lg:hidden transition-all duration-300 ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
-          } overflow-y-auto bg-blue-900/95 backdrop-blur-md`}>
+        {/* Mobile Menu */}
+        <div className={`lg:hidden transition-all duration-300 ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-y-auto bg-blue-900/95 backdrop-blur-md`}>
           <div className="px-4 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
               <MobileMenuItem

@@ -27,11 +27,10 @@ import {
 import Link from 'next/link';
 import { Article, BlogStats } from '@/types/blog';
 import { BackendlessService, BackendlessArticle } from '@/lib/backendlessArticle';
-
+import { useRouter } from 'next/navigation';
 
 const categories = ["Technology", "Security", "Regulation", "Payments", "Innovation", "Customer Experience"];
 
-// Helper function to convert Backendless article to display format
 const convertToDisplayFormat = (article: BackendlessArticle): Article => {
     return {
         ...article,
@@ -45,14 +44,17 @@ const convertToDisplayFormat = (article: BackendlessArticle): Article => {
         featured: article.publish || false
     };
 };
+
 export default function Dashboard() {
+    const router = useRouter();
     const [posts, setPosts] = useState<Article[]>([]);
     const [editingPost, setEditingPost] = useState<Article | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // This loading state is for articles
     const [submitting, setSubmitting] = useState(false);
+    const [isAuthenticating, setIsAuthenticating] = useState(true); // New state for initial authentication check
 
     const [newPost, setNewPost] = useState<Omit<BackendlessArticle, 'objectId' | 'created' | 'updated'>>({
         title: '',
@@ -64,14 +66,30 @@ export default function Dashboard() {
         publish: false
     });
 
-    // Load articles from Backendless
+    // --- Authentication Check Effect ---
     useEffect(() => {
-        loadArticles();
-    }, []);
+        const token = localStorage.getItem('tkn');
+        if (!token) {
+            // No token, redirect immediately
+            router.replace('/sign-in');
+        } else {
+            // Token found, set authenticating to false and then load articles
+            setIsAuthenticating(false);
+        }
+    }, [router]);
+
+    // Effect to load articles only after authentication is confirmed
+    // and when the component is no longer in the initial authenticating state
+    useEffect(() => {
+        if (!isAuthenticating && localStorage.getItem('tkn')) {
+            loadArticles();
+        }
+    }, [isAuthenticating]); // Depend on isAuthenticating to trigger loadArticles once authenticated
+
 
     const loadArticles = async () => {
         try {
-            setLoading(true);
+            setLoading(true); // Set loading for articles fetch
             const backendlessArticles = await BackendlessService.getArticles();
             const convertedArticles = backendlessArticles.map(convertToDisplayFormat);
             setPosts(convertedArticles);
@@ -79,7 +97,7 @@ export default function Dashboard() {
             console.error('Error loading articles:', error);
             toast.error('Failed to load articles');
         } finally {
-            setLoading(false);
+            setLoading(false); // End loading for articles fetch
         }
     };
 
@@ -102,16 +120,13 @@ export default function Dashboard() {
         try {
             setSubmitting(true);
 
-            // Generate slug if not provided
             const slug = newPost.slug || BackendlessService.generateSlug(newPost.title);
             const articleData = { ...newPost, slug };
 
             if (editingPost && editingPost.objectId) {
-                // Update existing post
                 await BackendlessService.updateArticle(editingPost.objectId, articleData);
                 toast.success('Article updated successfully!');
             } else {
-                // Create new post
                 await BackendlessService.createArticle(articleData);
                 toast.success('Article created successfully!');
             }
@@ -167,20 +182,36 @@ export default function Dashboard() {
         });
     };
 
-    // Auto-generate slug when title changes
     const handleTitleChange = (title: string) => {
         const slug = BackendlessService.generateSlug(title);
         setNewPost({ ...newPost, title, slug });
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("tkn");
-        window.location.href = "/sign-in";
+        localStorage.removeItem("tkn"); // Clear the token
+        window.location.reload(); // Force a full page reload
+        // router.replace("/sign-in"); // This line will be executed after reload, but reload ensures clean state
     };
+
+    // --- Render based on authentication status ---
+    if (isAuthenticating) {
+        // Show a loading state while initial authentication check is running
+        return (
+            <div className="flex justify-center items-center h-screen bg-gray-50">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                <span className="ml-2 text-lg text-gray-700">Checking authentication...</span>
+            </div>
+        );
+    }
+
+    // If not authenticating and no token (meaning redirect has occurred), render nothing
+    if (!localStorage.getItem('tkn')) {
+        return null;
+    }
+    // --- End: Render based on authentication status ---
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
             <header className="text-white sticky top-0 z-50 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://images.pexels.com/photos/259027/pexels-photo-259027.jpeg?auto=compress&cs=tinysrgb&w=1600)' }}>
                 <div className="absolute inset-0 bg-blue-900/70"></div>
                 <div className="relative container mx-auto px-4 py-6">
@@ -195,9 +226,9 @@ export default function Dashboard() {
                                     View Blog
                                 </Button>
                             </Link>
-                            <Button 
+                            <Button
                                 onClick={handleLogout}
-                                variant="ghost" 
+                                variant="ghost"
                                 className="text-white hover:bg-white/10"
                             >
                                 Log Out
@@ -208,7 +239,6 @@ export default function Dashboard() {
             </header>
 
             <div className="container mx-auto px-4 py-8">
-                {/* Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <Card className="card-hover">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -263,7 +293,6 @@ export default function Dashboard() {
                     </Card>
                 </div>
 
-                {/* Actions and Filters */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                     <div className="flex-1 relative">
                         <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -403,7 +432,6 @@ export default function Dashboard() {
                     </Dialog>
                 </div>
 
-                {/* Posts Table */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Blog Posts</CardTitle>
