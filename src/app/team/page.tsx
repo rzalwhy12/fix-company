@@ -130,12 +130,12 @@ export default function LeadershipPage() {
 
             {/* Hero Section */}
             <section
-                className="relative py-20 overflow-hidden text-white" // Tambahkan text-white di sini
+                className="relative py-12 md:py-20 overflow-hidden text-white"
                 style={{
-                    backgroundImage: "url('/image/bg-1.png')", // Gambar background
+                    backgroundImage: "url('/image/bg-1.png')",
                     backgroundPosition: "center",
-                    backgroundSize: "1800px auto", // Ukuran background
-                    backgroundAttachment: "fixed" // Efek parallax
+                    backgroundSize: "1800px auto",
+                    backgroundAttachment: "fixed"
                 }}
             >
                 {/* Animated Shapes dari saving-loan */}
@@ -148,27 +148,27 @@ export default function LeadershipPage() {
                 {/* Overlay dari saving-loan */}
                 <div className="absolute inset-0 bg-blue-950 opacity-60 backdrop-blur-sm z-0"></div>
 
-                <div className="relative max-w-7xl mt-40 mx-auto px-4 sm:px-6 lg:px-8 text-center z-2"> 
+                <div className="relative max-w-7xl mt-20 md:mt-40 mx-auto px-4 sm:px-6 lg:px-8 text-center z-2">
                     <div className="max-w-4xl mx-auto ">
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg"> {/* Tambahkan drop-shadow-lg */}
+                        <h1 className="text-3xl md:text-6xl font-bold text-white mb-4 md:mb-6 drop-shadow-lg">
                             Kepemimpinan
                             <span className="block text-amber-300">Yang Visioner</span>
                         </h1>
-                        <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+                        <p className="text-base md:text-xl text-blue-100 mb-6 md:mb-8 leading-relaxed">
                             Direksi dan Komisaris Bank SDA berkomitmen untuk memimpin transformasi digital
                             dan sustainable banking untuk masa depan yang lebih baik.
                         </p>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                                <Shield className="w-5 h-5 text-amber-300" />
+                        <div className="flex flex-wrap justify-center gap-2 md:gap-4 text-xs md:text-base">
+                            <div className="flex items-center space-x-1 md:space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 md:px-4 md:py-2">
+                                <Shield className="w-4 h-4 md:w-5 md:h-5 text-amber-300" />
                                 <span className="text-white font-medium">Tata Kelola Terpercaya</span>
                             </div>
-                            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                                <TrendingUp className="w-5 h-5 text-amber-300" />
+                            <div className="flex items-center space-x-1 md:space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 md:px-4 md:py-2">
+                                <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-amber-300" />
                                 <span className="text-white font-medium">Inovasi Berkelanjutan</span>
                             </div>
-                            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                                <Award className="w-5 h-5 text-amber-300" />
+                            <div className="flex items-center space-x-1 md:space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 md:px-4 md:py-2">
+                                <Award className="w-4 h-4 md:w-5 md:h-5 text-amber-300" />
                                 <span className="text-white font-medium">Prestasi Terdepan</span>
                             </div>
                         </div>
@@ -177,18 +177,18 @@ export default function LeadershipPage() {
             </section>
 
             {/* Filter Section */}
-            <section className="py-12 bg-white/50">
+            <section className="py-8 md:py-12 bg-white/50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8 text-center md:text-left">
                         <div>
-                            <h2 className="text-3xl font-bold text-gray-900 mb-2">Tim Kepemimpinan</h2>
-                            <p className="text-gray-600">Profil lengkap direksi dan komisaris Bank SDA</p>
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">Tim Kepemimpinan</h2>
+                            <p className="text-sm md:text-base text-gray-600">Profil lengkap direksi dan komisaris Bank SDA</p>
                         </div>
-                        <div className="flex space-x-2 mt-4 md:mt-0">
+                        <div className="flex flex-wrap justify-center gap-2 mt-4 md:mt-0">
                             <Button
                                 variant={selectedCategory === 'all' ? 'default' : 'outline'}
                                 onClick={() => setSelectedCategory('all')}
-                                className="flex items-center space-x-2"
+                                className="flex items-center space-x-2 text-sm px-3 py-2"
                             >
                                 <Users className="w-4 h-4" />
                                 <span>Semua</span>
@@ -196,7 +196,7 @@ export default function LeadershipPage() {
                             <Button
                                 variant={selectedCategory === 'director' ? 'default' : 'outline'}
                                 onClick={() => setSelectedCategory('director')}
-                                className="flex items-center space-x-2"
+                                className="flex items-center space-x-2 text-sm px-3 py-2"
                             >
                                 <Building2 className="w-4 h-4" />
                                 <span>Direksi</span>
@@ -204,7 +204,7 @@ export default function LeadershipPage() {
                             <Button
                                 variant={selectedCategory === 'commissioner' ? 'default' : 'outline'}
                                 onClick={() => setSelectedCategory('commissioner')}
-                                className="flex items-center space-x-2"
+                                className="flex items-center space-x-2 text-sm px-3 py-2"
                             >
                                 <Shield className="w-4 h-4" />
                                 <span>Komisaris</span>
@@ -213,44 +213,44 @@ export default function LeadershipPage() {
                     </div>
 
                     {/* Leadership Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {filteredExecutives.map((executive) => (
                             <Card key={executive.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-0 shadow-md">
                                 <div className="relative">
                                     <img
                                         src={executive.image}
                                         alt={executive.name}
-                                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                                        className="w-full h-48 md:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
-                                    <div className="absolute top-4 right-4">
+                                    <div className="absolute top-3 right-3 md:top-4 md:right-4">
                                         <Badge
                                             variant={executive.category === 'director' ? 'default' : 'secondary'}
-                                            className="bg-white/90 text-gray-800 hover:bg-white"
+                                            className="bg-white/90 text-gray-800 hover:bg-white text-xs md:text-sm"
                                         >
                                             {executive.category === 'director' ? 'Direksi' : 'Komisaris'}
                                         </Badge>
                                     </div>
                                 </div>
 
-                                <CardContent className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1">{executive.name}</h3>
-                                    <p className="text-blue-600 font-medium mb-3">{executive.position}</p>
-                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{executive.bio}</p>
+                                <CardContent className="p-4 md:p-6">
+                                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-1">{executive.name}</h3>
+                                    <p className="text-blue-600 font-medium mb-2 md:mb-3 text-sm">{executive.position}</p>
+                                    <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2">{executive.bio}</p>
 
-                                    <div className="space-y-2 mb-4">
-                                        <div className="flex items-center text-sm text-gray-500">
-                                            <Award className="w-4 h-4 mr-2" />
+                                    <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
+                                        <div className="flex items-center text-xs md:text-sm text-gray-500">
+                                            <Award className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                                             {executive.experience}
                                         </div>
-                                        <div className="flex items-center text-sm text-gray-500">
-                                            <Star className="w-4 h-4 mr-2" />
+                                        <div className="flex items-center text-xs md:text-sm text-gray-500">
+                                            <Star className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                                             {executive.education}
                                         </div>
                                     </div>
 
-                                    <Separator className="my-4" />
+                                    <Separator className="my-3 md:my-4" />
 
-                                    <div className="flex flex-wrap gap-2 mb-4">
+                                    <div className="flex flex-wrap gap-1 md:gap-2 mb-3 md:mb-4">
                                         {executive.achievements.slice(0, 2).map((achievement, index) => (
                                             <Badge key={index} variant="secondary" className="text-xs">
                                                 {achievement}
@@ -259,12 +259,12 @@ export default function LeadershipPage() {
                                     </div>
 
                                     <div className="flex space-x-2">
-                                        <Button size="sm" variant="outline" className="flex-1">
-                                            <Mail className="w-4 h-4 mr-2" />
+                                        <Button size="sm" variant="outline" className="flex-1 text-xs md:text-sm py-2">
+                                            <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                                             Email
                                         </Button>
-                                        <Button size="sm" variant="outline" className="flex-1">
-                                            <Linkedin className="w-4 h-4 mr-2" />
+                                        <Button size="sm" variant="outline" className="flex-1 text-xs md:text-sm py-2">
+                                            <Linkedin className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                                             LinkedIn
                                         </Button>
                                     </div>
@@ -276,24 +276,24 @@ export default function LeadershipPage() {
             </section>
 
             {/* Stats Section */}
-            <section className="py-16 bg-gradient-to-r from-blue-900 to-blue-950">
+            <section className="py-12 md:py-16 bg-gradient-to-r from-blue-900 to-blue-950">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
                         <div>
-                            <div className="text-4xl font-bold text-amber-300 mb-2">150+</div>
-                            <p className="text-blue-100">Tahun Pengalaman Gabungan</p>
+                            <div className="text-3xl md:text-4xl font-bold text-amber-300 mb-1 md:mb-2">150+</div>
+                            <p className="text-blue-100 text-sm md:text-base">Tahun Pengalaman Gabungan</p>
                         </div>
                         <div>
-                            <div className="text-4xl font-bold text-amber-300 mb-2">25+</div>
-                            <p className="text-blue-100">Penghargaan Industri</p>
+                            <div className="text-3xl md:text-4xl font-bold text-amber-300 mb-1 md:mb-2">25+</div>
+                            <p className="text-blue-100 text-sm md:text-base">Penghargaan Industri</p>
                         </div>
                         <div>
-                            <div className="text-4xl font-bold text-amber-300 mb-2">50+</div>
-                            <p className="text-blue-100">Inovasi Produk</p>
+                            <div className="text-3xl md:text-4xl font-bold text-amber-300 mb-1 md:mb-2">50+</div>
+                            <p className="text-blue-100 text-sm md:text-base">Inovasi Produk</p>
                         </div>
                         <div>
-                            <div className="text-4xl font-bold text-amber-300 mb-2">99%</div>
-                            <p className="text-blue-100">Kepuasan Nasabah</p>
+                            <div className="text-3xl md:text-4xl font-bold text-amber-300 mb-1 md:mb-2">99%</div>
+                            <p className="text-blue-100 text-sm md:text-base">Kepuasan Nasabah</p>
                         </div>
                     </div>
                 </div>
