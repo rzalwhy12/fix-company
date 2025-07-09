@@ -74,7 +74,7 @@ const CustomerEnquiryForm: React.FC = () => {
     }, [purpose, setValue]);
 
     const onSubmit: SubmitHandler<FormData> = (data) => {
-    const emailTo = 'your@email.com'; // Ganti dengan email tujuan
+    const emailTo = 'rzalcorp05@email.com'; // Ganti dengan email tujuan
 
     const cleanedSaving = data.savingAmount?.replace(/\./g, '');
     const cleanedLoan = data.loanAmount?.replace(/\./g, '');
