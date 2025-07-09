@@ -69,11 +69,11 @@ const ArticleDetailPage = async ({params}:IArticleDetailPageProps) => {
                     </div>
                     <div>
                         <p className="font-semibold">AUTHOR</p>
-                        <p>Risal Ganteng</p>
+                        <p>{article.author}</p>
                     </div>
                     <div>
                         <p className="font-semibold">READ</p>
-                        <p>{article.readTime || "N/A"}</p>
+                        <p>{"24 jam"}</p>
                     </div>
                 </div>
                 <section id="content" className="mt-10 md:mx-31">
