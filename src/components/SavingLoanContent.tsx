@@ -97,7 +97,7 @@ export default function SavingLoanContent() { // <--- TIDAK ADA PROPS LAGI
                                 <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 ml-2 -mr-1" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className={`w-48 sm:w-56 ${glassMorphismClass} p-2 text-gray-700`}>
+                        <DropdownMenuContent className={`w-48 sm:w-56 p-2 text-gray-700`}>
                             {dropdownItems.map((item) => (
                                 <DropdownMenuItem
                                     key={item.id}

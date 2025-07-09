@@ -190,7 +190,7 @@ const CustomerEnquiryForm: React.FC = () => {
                                     <SelectValue placeholder="Select Your Purpose" />
                                 </SelectTrigger>
                                 {/* Meningkatkan z-index pada SelectContent */}
-                                <SelectContent position="popper" sideOffset={5} className="z-[9999] bg-white/20 backdrop-blur-sm pb-4">
+                                <SelectContent position="popper" sideOffset={5} className="z-[9999] ">
                                     <SelectItem value="saving">Savings / Deposit</SelectItem>
                                     <SelectItem value="loan">Loan / Credit</SelectItem>
                                 </SelectContent>
