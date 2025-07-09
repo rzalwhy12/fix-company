@@ -153,13 +153,12 @@ const Hero = () => {
               />
             ) : (
               <video
-                // Use index === currentSlide to ensure ref only attaches to the active background video
                 ref={index === currentSlide ? videoRef : null}
                 className="absolute inset-0 w-full h-full object-cover"
                 src={item.src}
-                autoPlay // Keep autoPlay for background
-                loop // Keep loop for background
-                muted // Keep muted for background
+                autoPlay 
+                loop 
+                muted 
                 playsInline
                 preload="auto"
                 aria-label={item.alt}
@@ -356,8 +355,8 @@ const Hero = () => {
       </div>
 
       {/* Scroll Down Icon */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-40 md:bottom-4">
-        <ChevronDown className="h-5 w-5 text-white animate-bounce md:h-6 md:w-6" />
+      <div className="absolute sm:bottom-1 lg:bottom-2 left-1/2 transform -translate-x-1/2 z-0 md:bottom-2">
+        <ChevronDown className="h-5 w-5 text-purple-200 animate-bounce md:h-6 md:w-6" />
       </div>
 
       {/* Video Fullscreen Modal */}
