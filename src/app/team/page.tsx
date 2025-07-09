@@ -146,9 +146,9 @@ export default function LeadershipPage() {
                 <div className="animated-shape absolute bg-white/10 rounded-full top-1/3 right-1/4 w-36 h-36 animate-pulse-slow delay-2000"></div>
 
                 {/* Overlay dari saving-loan */}
-                <div className="absolute inset-0 bg-blue-950 opacity-60 backdrop-blur-sm z-20"></div>
+                <div className="absolute inset-0 bg-blue-950 opacity-60 backdrop-blur-sm z-0"></div>
 
-                <div className="relative max-w-7xl mt-40 mx-auto px-4 sm:px-6 lg:px-8 text-center z-30"> {/* Tambahkan z-30 */}
+                <div className="relative max-w-7xl mt-40 mx-auto px-4 sm:px-6 lg:px-8 text-center z-2"> 
                     <div className="max-w-4xl mx-auto ">
                         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg"> {/* Tambahkan drop-shadow-lg */}
                             Kepemimpinan
