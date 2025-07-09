@@ -35,5 +35,3 @@ const ArticleDetailPage: React.FunctionComponent<IArticleDetailPageProps> = (
 
 export default ArticleDetailPage;
 
-
-
