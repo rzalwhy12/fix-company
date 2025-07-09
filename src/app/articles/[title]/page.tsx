@@ -80,8 +80,7 @@ const ArticleDetailPage = async ({params}:IArticleDetailPageProps) => {
                     <div className="w-full rounded-4xl h-50 md:w-[75vw] md:h-[30vh] xl:h-[70vh] shadow-lg relative overflow-hidden">
                         {article.thumbnail && (
                             <img className="w-fit"
-                                src={`https://picsum.photos/id/${Math.floor(Math.random() * 30
-                                )}/1500/1000`}
+                                src={`${article.thumbnail}`}
                                 alt={article.title || "Article Thumbnail"}
                             />
                         )}
