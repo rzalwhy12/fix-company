@@ -75,7 +75,7 @@ export default function SavingLoanPage() {
                             </Button>
                         </Link>
 
-                        <Link href="/saving-loan?tab=financing-product" passHref>
+                        <Link href="/#Calculator" passHref>
                             <Button size="lg" className="bg-white/20 text-white hover:bg-white/30 border border-white/30 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg md:text-xl">
                                 Credit Simulation
                             </Button>

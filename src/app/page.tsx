@@ -6,6 +6,7 @@ import Services from '@/components/Services';
 import Calculator from '@/components/Calculator';
 import Promote from '@/components/Promote';
 import Article from '@/components/Article';
+import TestimonialsSection from '@/components/Testimoni';
 
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       <div id='Calculator'>
       <Calculator />
       </div>
+      <TestimonialsSection />
     </div>
     </main>
   );
