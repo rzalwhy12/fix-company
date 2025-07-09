@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-blue-800 text-amber-300 hover:bg-blue-900', // Deep blue with gold text
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-red-700 text-white hover:bg-red-800', // Deeper red for destructive actions
         outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+          'border border-blue-600 bg-transparent text-blue-800 hover:bg-blue-100 hover:text-blue-900', // Blue border, blue text, light blue hover
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+          'bg-amber-300 text-blue-800 hover:bg-amber-400', // Gold background with deep blue text
+        ghost: 'text-blue-800 hover:bg-blue-100 hover:text-blue-900', // Subtle blue for ghost, light blue hover
+        link: 'text-blue-800 underline-offset-4 hover:underline hover:text-blue-900', // Deep blue link
       },
       size: {
         default: 'h-10 px-4 py-2',
