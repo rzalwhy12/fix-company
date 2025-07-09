@@ -43,11 +43,11 @@ export default function SavingLoanPage() {
                     <p>Loading loan and saving products...</p>
                 </div>
             }>
-                {/* TIDAK PERLU initialTab lagi karena SavingLoanContent membaca URL-nya sendiri */}
-                <SavingLoanContent /> {/* <--- HAPUS initialTab={initialTabFromUrl} */}
+
+                <SavingLoanContent /> 
             </Suspense>
             <section
-                className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 text-white overflow-hidden"
+                className="relative py-12 z-[0] sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 text-white overflow-hidden "
                 style={{
                     backgroundImage: "url('/image/1.jpg')",
                     backgroundSize: "cover",
