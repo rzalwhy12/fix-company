@@ -15,8 +15,6 @@ const ArticleCard: React.FC<{ article: BackendlessArticle }> = ({ article }) => 
         visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } },
     };
 
-    // Pastikan properti seperti `title`, `thumbnail`, `created` ada
-    // Berikan nilai default atau lakukan pengecekan jika properti mungkin `undefined`
     const imageUrl = article.thumbnail || '/placeholder-image.jpg'; // Gambar placeholder jika tidak ada thumbnail
     const title = article.title || 'No Title';
     const description = article.content ? article.content.substring(0, 100) + '...' : 'No description available.'; // Gunakan sebagian content sebagai deskripsi
@@ -45,7 +43,7 @@ const ArticleCard: React.FC<{ article: BackendlessArticle }> = ({ article }) => 
                 <p className="text-gray-600 text-sm mb-3 line-clamp-2">{description}</p>
                 <div className="flex justify-between items-center text-gray-500 text-xs">
                     <span>{date}</span>
-                    <a href={`/articles/${article.slug || article.objectId}`} className="text-blue-700 hover:text-blue-900 flex items-center group">
+                    <a href={`/articles/${article.title}`} className="text-blue-700 hover:text-blue-900 flex items-center group">
                         Read More
                         <ArrowRight className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" />
                     </a>
@@ -65,7 +63,6 @@ const Article: React.FC = () => {
     const [loading, setLoading] = useState(true); // State untuk loading
     const [error, setError] = useState<string | null>(null); // State untuk error
 
-    // --- Ambil data artikel dari Backendless saat komponen di-mount ---
     useEffect(() => {
         const fetchArticles = async () => {
             setLoading(true);
@@ -81,20 +78,17 @@ const Article: React.FC = () => {
         };
 
         fetchArticles();
-    }, []); // Array dependensi kosong agar hanya berjalan sekali saat mount
+    }, []); 
 
     // Fungsi untuk melakukan auto-scroll
     const autoScroll = useCallback(() => {
         if (scrollContainerRef.current && !isHovered && articles.length > 0) { // Pastikan ada artikel sebelum scroll
             scrollContainerRef.current.scrollLeft += scrollSpeed.current;
 
-            // Logika looping: gulir kembali ke awal ketika mencapai setengah dari lebar konten
-            // Ini akan bekerja lebih baik dengan duplikasi kartu
+
             const scrollWidth = scrollContainerRef.current.scrollWidth;
             const clientWidth = scrollContainerRef.current.clientWidth;
 
-            // Jika sudah scroll melewati "set" kartu pertama, reset ke awal set kedua
-            // Ini asumsi kita menduplikasi set kartu yang sama persis
             if (scrollContainerRef.current.scrollLeft >= scrollWidth / 2) {
                  scrollContainerRef.current.scrollLeft -= (scrollWidth / 2); // Kembali ke awal set duplikat
             }
@@ -192,24 +186,6 @@ const Article: React.FC = () => {
                     </a>
                 </div>
             </div>
-
-            {/* Pastikan styling ini berada di file CSS global Anda, misal globals.css */}
-            {/* <style jsx global>{`
-                .custom-scrollbar::-webkit-scrollbar {
-                    height: 8px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-track {
-                    background: #f1f1f1;
-                    border-radius: 10px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: #ccc;
-                    border-radius: 10px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: #aaa;
-                }
-            `}</style> */}
         </section>
     );
 };

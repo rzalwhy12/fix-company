@@ -186,7 +186,7 @@ export default function Home() {
                                     </div>
                                     <CardHeader>
                                         <CardTitle className="text-xl line-clamp-2 hover:text-blue-600 transition-colors">
-                                            <Link href={`/articles/${post.slug || post.id}`} className="hover:underline">
+                                            <Link href={`/articles/${post.title}`} className="hover:underline">
                                                 {post.title}
                                             </Link>
                                         </CardTitle>
@@ -207,8 +207,8 @@ export default function Home() {
                                             ))}
                                         </div>
                                         {/* Ubah Button menjadi Link */}
-                                        <Link href={`/articles/${post.slug || post.id}`} passHref>
-                                            <Button asChild className="w-full bg-gray-200 hover:bg-gray-300">
+                                        <Link href={`/articles/${post.title}`} passHref>
+                                            <Button asChild className="w-full hover:bg-blue-700">
                                                 <a>Read More</a>
                                             </Button>
                                         </Link>

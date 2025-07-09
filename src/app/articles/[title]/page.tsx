@@ -79,7 +79,7 @@ const ArticleDetailPage = async ({params}:IArticleDetailPageProps) => {
                 <section id="content" className="mt-10 md:mx-31">
                     <div className="w-full rounded-4xl h-50 md:w-[75vw] md:h-[30vh] xl:h-[70vh] shadow-lg relative overflow-hidden">
                         {article.thumbnail && (
-                            <img className="w-fit"
+                            <img className="w-full h-fit flex items-center justify-center"
                                 src={`${article.thumbnail}`}
                                 alt={article.title || "Article Thumbnail"}
                             />
