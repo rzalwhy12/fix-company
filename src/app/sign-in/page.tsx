@@ -14,10 +14,9 @@ import FloatingParticles from "@/components/FloatingParticles";
 const SignInPage: React.FunctionComponent = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  // Refs for form inputs
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
-  
+
   const onSignIn = async () => {
     try {
       const email = emailRef.current?.value;
@@ -32,10 +31,7 @@ const SignInPage: React.FunctionComponent = () => {
         },
       });
       dispatch(setSignIn(res.data[0]));
-
-      // Store objectId to localStorage
       localStorage.setItem("tkn", res.data[0].objectId);
-
       alert("Welcome back!");
       router.replace("/dashboard");
     } catch (error) {
@@ -51,7 +47,7 @@ const SignInPage: React.FunctionComponent = () => {
   });
 
   return (
-    <div className="min-h-screen relative overflow-hidden text-gray-800">
+    <div className="min-h-screen relative overflow-hidden text-gray-800 z-[0]">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundSlider />
         <FloatingParticles />

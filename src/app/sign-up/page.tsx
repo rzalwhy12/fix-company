@@ -20,25 +20,21 @@ const SignUpPage: React.FunctionComponent = () => {
 
   const onSignUp = async () => {
     try {
-      // Get values from form inputs
       const username = inUsernameRef.current?.value;
       const email = inEmailRef.current?.value;
       const password = passwordRef.current?.value;
       const confPassword = confPasswordRef.current?.value;
 
-      // Check if all fields are filled
       if (!username || !email || !password || !confPassword) {
         alert("Please fill all fields");
         return;
       }
 
-      // Check password match
       if (password !== confPassword) {
         alert("Password and confirmation don't match");
         return;
       }
 
-      // Save data to backendless
       const response = await apiCall.post("/accounts", {
         username,
         email,
@@ -54,7 +50,7 @@ const SignUpPage: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden text-gray-800">
+    <div className="min-h-screen relative overflow-hidden text-gray-800 z-[0]">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundSlider />
         <FloatingParticles />

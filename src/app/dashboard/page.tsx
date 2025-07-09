@@ -184,7 +184,7 @@ export default function Dashboard() {
             <header className="text-white sticky top-0 z-50 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://images.pexels.com/photos/259027/pexels-photo-259027.jpeg?auto=compress&cs=tinysrgb&w=1600)' }}>
                 <div className="absolute inset-0 bg-blue-900/70"></div>
                 <div className="relative container mx-auto px-4 py-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="flex items-center space-x-2">
                             <BarChart3 className="h-8 w-8" />
                             <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -209,7 +209,7 @@ export default function Dashboard() {
 
             <div className="container mx-auto px-4 py-8">
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <Card className="card-hover">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
@@ -271,7 +271,7 @@ export default function Dashboard() {
                             placeholder="Search posts..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10"
+                            className="pl-10 w-full"
                         />
                     </div>
                     <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -289,12 +289,12 @@ export default function Dashboard() {
                     </Select>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button onClick={resetForm} className="bg-blue-600 hover:bg-blue-700">
+                            <Button onClick={resetForm} className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
                                 <Plus className="h-4 w-4 mr-2" />
                                 New Post
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                        <DialogContent className="max-w-md md:max-w-2xl max-h-[80vh] overflow-y-auto">
                             <DialogHeader>
                                 <DialogTitle>
                                     {editingPost ? 'Edit Post' : 'Create New Post'}
@@ -333,7 +333,7 @@ export default function Dashboard() {
                                         disabled={submitting}
                                     />
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <Label htmlFor="author">Author</Label>
                                         <Input
@@ -383,8 +383,8 @@ export default function Dashboard() {
                                     />
                                     <Label htmlFor="publish">Publish Article</Label>
                                 </div>
-                                <div className="flex gap-2">
-                                    <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={submitting}>
+                                <div className="flex flex-col sm:flex-row gap-2">
+                                    <Button type="submit" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto" disabled={submitting}>
                                         {submitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                                         {editingPost ? 'Update Article' : 'Create Article'}
                                     </Button>
@@ -393,6 +393,7 @@ export default function Dashboard() {
                                         variant="outline"
                                         onClick={() => setIsDialogOpen(false)}
                                         disabled={submitting}
+                                        className="w-full sm:w-auto"
                                     >
                                         Cancel
                                     </Button>
@@ -417,58 +418,60 @@ export default function Dashboard() {
                                 <span className="ml-2">Loading articles...</span>
                             </div>
                         ) : (
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Title</TableHead>
-                                        <TableHead>Author</TableHead>
-                                        <TableHead>Category</TableHead>
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Created</TableHead>
-                                        <TableHead>Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredPosts.map((post) => (
-                                        <TableRow key={post.objectId}>
-                                            <TableCell className="font-medium max-w-xs">
-                                                <div className="truncate">{post.title}</div>
-                                            </TableCell>
-                                            <TableCell>{post.author}</TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline">{post.categoryy}</Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant={post.publish ? "default" : "secondary"}>
-                                                    {post.publish ? "Published" : "Draft"}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                {post.created ? new Date(post.created).toLocaleDateString() : 'N/A'}
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="flex space-x-2">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => handleEdit(post)}
-                                                    >
-                                                        <Edit className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => handleDelete(post)}
-                                                        className="text-red-600 hover:text-red-700"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="min-w-[150px]">Title</TableHead>
+                                            <TableHead className="min-w-[100px]">Author</TableHead>
+                                            <TableHead className="min-w-[120px]">Category</TableHead>
+                                            <TableHead className="min-w-[100px]">Status</TableHead>
+                                            <TableHead className="min-w-[120px]">Created</TableHead>
+                                            <TableHead className="min-w-[100px]">Actions</TableHead>
                                         </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {filteredPosts.map((post) => (
+                                            <TableRow key={post.objectId}>
+                                                <TableCell className="font-medium max-w-xs">
+                                                    <div className="truncate">{post.title}</div>
+                                                </TableCell>
+                                                <TableCell>{post.author}</TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline">{post.categoryy}</Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant={post.publish ? "default" : "secondary"}>
+                                                        {post.publish ? "Published" : "Draft"}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {post.created ? new Date(post.created).toLocaleDateString() : 'N/A'}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <div className="flex space-x-2">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleEdit(post)}
+                                                        >
+                                                            <Edit className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleDelete(post)}
+                                                            className="text-red-600 hover:text-red-700"
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         )}
                     </CardContent>
                 </Card>
