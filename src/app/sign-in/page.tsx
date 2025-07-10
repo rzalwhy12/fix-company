@@ -48,7 +48,7 @@ const SignInPage: React.FunctionComponent = () => {
   });
 
   return (
-    <div className="min-h-screen relative overflow-hidden text-gray-800 z-[]">
+    <div className="min-h-screen relative overflow-hidden text-gray-800 z-[0]">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <BackgroundSlider />
         <FloatingParticles />
