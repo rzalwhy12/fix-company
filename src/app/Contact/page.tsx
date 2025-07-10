@@ -91,7 +91,7 @@ export default function ContactSection() {
 
 
             {/* Ambient Light Effects - z-index di atas orbs tapi di bawah main content */}
-            <div className="absolute inset-0 pointer-events-none z-25">
+            <div className="absolute inset-0 pointer-events-none z-0">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-blue-400/80 to-transparent"></div>
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-400/80 to-transparent"></div>
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 h-full w-px bg-gradient-to-b from-transparent via-blue-400/80 to-transparent"></div>
@@ -100,7 +100,7 @@ export default function ContactSection() {
             <div className="absolute inset-0 bg-gray-950/50" />
 
             {/* Main Content - Ini adalah lapisan paling depan yang berisi semua konten kontak, z-index tertinggi */}
-            <div className="relative z-30 container mx-auto px-4 py-12 sm:py-16 md:py-20 lg:py-24">
+            <div className="relative z-0 container mx-auto px-4 py-12 sm:py-16 md:py-20 lg:py-24">
                 {/* Header Section */}
                 <div className="text-center mt-6 mb-12 sm:mb-16 md:mb-20 space-y-4 sm:space-y-6 text-white">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-white">
