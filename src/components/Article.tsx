@@ -180,7 +180,7 @@ const Article: React.FC = () => {
                 )}
 
                 <div className="text-center mt-12">
-                    <a href="/articles" className="inline-flex items-center text-orange-400 font-semibold text-lg hover:text-orange-600 transition-colors">
+                    <a href="/blog" className="inline-flex items-center text-orange-400 font-semibold text-lg hover:text-orange-600 transition-colors">
                         see more
                         <ArrowRight className="ml-2 w-5 h-5" />
                     </a>
