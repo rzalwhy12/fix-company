@@ -22,9 +22,6 @@ const LoginPage: React.FC = () => {
 
         if (username === DASHBOARD_USERNAME && password === DASHBOARD_PASSWORD) {
             localStorage.setItem('isAuthenticated', 'true');
-            // Pastikan ini mengarah ke path yang benar setelah login
-            // Jika Anda ingin ke /dashboard, ubah menjadi '/dashboard'
-            // Jika Anda ingin ke /publication/dashboardoc, biarkan seperti ini
             router.push('/publication/dashboardoc');
         } else {
             setError('Invalid username or password.');
