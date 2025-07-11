@@ -29,8 +29,6 @@ const convertToDisplayFormat = (article: any): Article => {
         image: article.thumbnail || 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=800',
         excerpt: article.content ? article.content.substring(0, 150) + '...' : '',
         readTime: Math.ceil((article.content?.length || 0) / 200) + ' min read',
-        // Pastikan format tanggal sesuai kebutuhan Anda.
-        // BackendlessService.formatDate() akan lebih baik jika Anda memindahkannya ke sini atau menggunakannya secara langsung.
         date: article.created ? new Date(article.created).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         tags: article.categoryy ? [article.categoryy] : [],
         featured: article.publish || false
@@ -90,9 +88,9 @@ export default function Home() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button className="bg-amber-500 hover:bg-amber-600 text-white">
-                                <a href="https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/294/2025/01/07/Timothy-3551369361.jpg" target="_blank" rel="noopener noreferrer">
+                                <Link href="#timoti">
                                     Subscribe
-                                </a>
+                                </Link>
                             </Button>
                         </div>
                     </div>
@@ -222,7 +220,7 @@ export default function Home() {
 
 
             {/* Newsletter Section */}
-            <section className="py-16 gradient-banking text-white">
+            <section id='timoti' className="py-16 gradient-banking text-white">
                 <div className="container mx-auto px-4">
                     <div className="max-w-2xl mx-auto text-center">
                         <h3 className="text-3xl font-bold mb-4">Stay Updated</h3>
@@ -237,9 +235,9 @@ export default function Home() {
                             />
 
                             <Button className="bg-amber-500 hover:bg-amber-600 text-white">
-                                <a href="https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/294/2025/01/07/Timothy-3551369361.jpg" target="_blank" rel="noopener noreferrer">
+                                <Link href="https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/294/2025/01/07/Timothy-3551369361.jpg" target="_blank" rel="noopener noreferrer">
                                     Subscribe
-                                </a>
+                                </Link>
                             </Button>
 
                         </div>
