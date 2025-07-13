@@ -25,13 +25,13 @@ const convertToDisplayFormat = (article: any): Article => {
     return {
         ...article,
         id: article.objectId,
-        category: article.categoryy,
+        category: article.categoryy, // Pastikan ini sesuai dengan nama kolom kategori di Backendless
         image: article.thumbnail || 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=800',
         excerpt: article.content ? article.content.substring(0, 150) + '...' : '',
         readTime: Math.ceil((article.content?.length || 0) / 200) + ' min read',
         date: article.created ? new Date(article.created).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         tags: article.categoryy ? [article.categoryy] : [],
-        featured: article.publish || false
+        featured: article.publish || false // Jika ada kolom 'publish' sebagai featured
     };
 };
 
@@ -72,6 +72,11 @@ export default function Home() {
         });
         setFilteredPosts(filtered);
     }, [searchTerm, selectedCategory, articles]);
+
+    // Ambil artikel unggulan/terbaru
+    const featuredArticle = filteredPosts.find(post => post.featured) || (filteredPosts.length > 0 ? filteredPosts[0] : null);
+    // Semua artikel lainnya (kecuali featuredArticle)
+    const otherArticles = filteredPosts.filter(post => post.id !== featuredArticle?.id);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -141,83 +146,152 @@ export default function Home() {
                 <div className="container mx-auto px-4">
                     <h3 className="text-3xl font-bold mb-12 text-center">Featured Articles</h3>
                     {loading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {[1, 2, 3].map((i) => (
-                                <Card key={i} className="animate-pulse">
-                                    <div className="aspect-video bg-gray-200 rounded-t-lg"></div>
-                                    <CardHeader>
-                                        <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                                        <div className="h-4 bg-gray-200 rounded"></div>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                                        <div className="h-10 bg-gray-200 rounded"></div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
+                        <>
+                            {/* Loading skeleton for the full-width featured card */}
+                            <Card className="animate-pulse mb-8 flex flex-col md:flex-row">
+                                <div className="md:w-1/2 aspect-video bg-gray-200"></div>
+                                <div className="md:w-1/2 p-4">
+                                    <div className="h-8 bg-gray-200 mb-4"></div>
+                                    <div className="h-4 bg-gray-200 mb-2"></div>
+                                    <div className="h-4 bg-gray-200 mb-6"></div>
+                                    <div className="h-12 bg-gray-200"></div>
+                                </div>
+                            </Card>
+                            {/* Loading skeleton for all other articles (uniform size) */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {[1, 2, 3, 4, 5, 6].map((i) => ( // Tambah item untuk placeholder
+                                    <Card key={`small-load-${i}`} className="animate-pulse">
+                                        <div className="aspect-video bg-gray-200"></div>
+                                        <CardHeader>
+                                            <div className="h-5 bg-gray-200 mb-2"></div>
+                                            <div className="h-3 bg-gray-200"></div>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="h-3 bg-gray-200 mb-4"></div>
+                                            <div className="h-8 bg-gray-200"></div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        </>
                     ) : filteredPosts.length === 0 ? (
                         <div className="text-center py-12">
                             <p className="text-gray-500 text-lg">No articles found</p>
                             <p className="text-gray-400">Try adjusting your search or category filter</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {filteredPosts.map((post, index) => (
-                                <Card key={post.objectId || post.id} className={`card-hover animate-fade-in`} style={{ animationDelay: `${index * 0.1}s` }}>
-                                    <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                        <>
+                            {/* Artikel Unggulan/Terbaru (Full-width dengan Thumbnail Kiri) */}
+                            {featuredArticle && (
+                                <Card key={featuredArticle.objectId || featuredArticle.id} className={`card-hover animate-fade-in mb-8 flex flex-col md:flex-row overflow-hidden`}>
+                                    <div className="relative md:w-1/2 aspect-video md:aspect-auto">
                                         <img
-                                            src={post.thumbnail || 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=800'}
-                                            alt={post.title}
+                                            src={featuredArticle.thumbnail || 'https://images.pexels.com/photos/259027/pexels-photo-259027.jpeg?auto=compress&cs=tinysrgb&w=1600'}
+                                            alt={featuredArticle.title}
                                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                                         />
                                         <div className="absolute top-4 left-4">
                                             <Badge variant="secondary" className="bg-blue-600 text-white">
-                                                {post.categoryy}
+                                                {featuredArticle.categoryy}
                                             </Badge>
                                         </div>
-                                        {post.featured && (
+                                        {featuredArticle.featured && (
                                             <div className="absolute top-4 right-4">
                                                 <Star className="h-5 w-5 text-amber-400 fill-current" />
                                             </div>
                                         )}
                                     </div>
-                                    <CardHeader>
-                                        <CardTitle className="text-xl line-clamp-2 hover:text-blue-600 transition-colors">
-                                            <Link href={`/articles/${post.title}`} className="hover:underline">
-                                                {post.title}
+                                    <div className="md:w-1/2 p-6 flex flex-col justify-between">
+                                        <div>
+                                            <CardTitle className="text-2xl md:text-4xl font-bold mb-3 line-clamp-2 hover:text-blue-600 transition-colors">
+                                                <Link href={`/articles/${encodeURIComponent(featuredArticle.title)}`} className="hover:underline">
+                                                    {featuredArticle.title}
+                                                </Link>
+                                            </CardTitle>
+                                            <CardDescription className="line-clamp-4 text-base mb-4">
+                                                {featuredArticle.excerpt || featuredArticle.content?.substring(0, 250) + '...'}
+                                            </CardDescription>
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                                <span>{featuredArticle.author}</span>
+                                                <span>{featuredArticle.readTime || '5 min read'}</span>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2 mb-4">
+                                                {(featuredArticle.tags || [featuredArticle.categoryy]).filter(Boolean).map((tag) => (
+                                                    <Badge key={tag} variant="outline" className="text-xs">
+                                                        {tag}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                            <Link href={`/articles/${encodeURIComponent(featuredArticle.title)}`} passHref>
+                                                <Button asChild className="w-full hover:bg-blue-700">
+                                                    <a>Read More</a>
+                                                </Button>
                                             </Link>
-                                        </CardTitle>
-                                        <CardDescription className="line-clamp-3">
-                                            {post.excerpt || post.content?.substring(0, 150) + '...'}
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                                            <span>{post.author}</span>
-                                            <span>{post.readTime || '5 min read'}</span>
                                         </div>
-                                        <div className="flex flex-wrap gap-2 mb-4">
-                                            {(post.tags || [post.categoryy]).filter(Boolean).map((tag) => (
-                                                <Badge key={tag} variant="outline" className="text-xs">
-                                                    {tag}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                        {/* Ubah Button menjadi Link */}
-                                        <Link href={`/articles/${post.title}`} passHref>
-                                            <Button asChild className="w-full hover:bg-blue-700">
-                                                <a>Read More</a>
-                                            </Button>
-                                        </Link>
-                                    </CardContent>
+                                    </div>
                                 </Card>
-                            ))}
-                        </div>
+                            )}
+
+                            {/* Grid untuk Semua Artikel Lainnya (ukuran seragam) */}
+                            {otherArticles.length > 0 && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {otherArticles.map((post, index) => (
+                                        <Card key={post.objectId || post.id} className={`card-hover animate-fade-in`} style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
+                                            <div className="aspect-video relative overflow-hidden">
+                                                <img
+                                                    src={post.thumbnail || 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=800'}
+                                                    alt={post.title}
+                                                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                                                />
+                                                <div className="absolute top-4 left-4">
+                                                    <Badge variant="secondary" className="bg-blue-600 text-white">
+                                                        {post.categoryy}
+                                                    </Badge>
+                                                </div>
+                                                {post.featured && (
+                                                    <div className="absolute top-4 right-4">
+                                                        <Star className="h-5 w-5 text-amber-400 fill-current" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <CardHeader>
+                                                <CardTitle className="text-xl line-clamp-2 hover:text-blue-600 transition-colors">
+                                                    <Link href={`/articles/${encodeURIComponent(post.title)}`} className="hover:underline">
+                                                        {post.title}
+                                                    </Link>
+                                                </CardTitle>
+                                                <CardDescription className="line-clamp-3">
+                                                    {post.excerpt || post.content?.substring(0, 150) + '...'}
+                                                </CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                                    <span>{post.author}</span>
+                                                    <span>{post.readTime || '5 min read'}</span>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2 mb-4">
+                                                    {(post.tags || [post.categoryy]).filter(Boolean).map((tag) => (
+                                                        <Badge key={tag} variant="outline" className="text-xs">
+                                                            {tag}
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+                                                <Link href={`/articles/${encodeURIComponent(post.title)}`} passHref>
+                                                    <Button asChild className="w-full hover:bg-blue-700">
+                                                        <a>Read More</a>
+                                                    </Button>
+                                                </Link>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </section>
-
 
             {/* Newsletter Section */}
             <section id='timoti' className="py-16 gradient-banking text-white">
@@ -233,13 +307,11 @@ export default function Home() {
                                 placeholder="Enter your email"
                                 className="flex-1 bg-white text-gray-900"
                             />
-
                             <Button className="bg-amber-500 hover:bg-amber-600 text-white">
                                 <Link href="https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/p1/294/2025/01/07/Timothy-3551369361.jpg" target="_blank" rel="noopener noreferrer">
                                     Subscribe
                                 </Link>
                             </Button>
-
                         </div>
                     </div>
                 </div>
