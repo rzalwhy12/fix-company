@@ -1,16 +1,13 @@
-// src/components/ArticleDisplay.tsx
-// Hapus 'use client'; karena ini akan menjadi Server Component
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, CalendarDays, User, Tag } from 'lucide-react';
 import { BackendlessArticle, BackendlessService } from '@/lib/backendlessArticle'; // Sesuaikan path
 
 interface ArticleDisplayProps {
-    article: BackendlessArticle; // Menerima artikel sebagai props
+    article: BackendlessArticle; 
 }
 
-// Ini sekarang adalah Server Component
+
 export default function ArticleDisplay({ article }: ArticleDisplayProps) {
     return (
         <div className="bg-gray-50 min-h-screen py-10 md:py-16">
@@ -29,8 +26,7 @@ export default function ArticleDisplay({ article }: ArticleDisplayProps) {
                             <Image
                                 src={article.thumbnail}
                                 alt={article.title || 'Article Image'}
-                                // layout="fill" // layout="fill" adalah default di Next.js 13+ Image jika parent punya posisi relatif
-                                fill // Gunakan prop 'fill'
+                                fill 
                                 objectFit="cover"
                                 quality={90}
                                 className="transition-transform duration-500 hover:scale-105"
@@ -72,9 +68,6 @@ export default function ArticleDisplay({ article }: ArticleDisplayProps) {
                     </div>
                 </article>
             </div>
-
-            {/* Hapus blok <style jsx global> karena tidak berfungsi di Server Component */}
-            {/* Pastikan CSS untuk .animate-fade-in-up ada di file globals.css Anda */}
         </div>
     );
 }

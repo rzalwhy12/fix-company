@@ -1,6 +1,6 @@
 // src/components/PublicationDocumentCard.tsx
 import React from 'react';
-import { FileText, FileSpreadsheet, FileImage, FileQuestion, File } from 'lucide-react';
+import { FileText, FileSpreadsheet, FileImage, File } from 'lucide-react';
 // This import is crucial for the 'Document' type
 import { Document, DocumentType } from '@/types/publication';
 
